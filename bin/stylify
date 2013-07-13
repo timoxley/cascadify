@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+"use strict"
+
+var program = require('commander')
+program.parse(process.argv)
+
+var stylify = require('../')()
+program.args.forEach(stylify.add.bind(stylify))
+stylify.bundle().pipe(process.stdout)
