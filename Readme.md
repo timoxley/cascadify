@@ -41,56 +41,32 @@ Cascadify uses [browserify](https://github.com/substack/node-browserify)'s packa
 
 ## Example
 
-### CSS A
-```css
-/* CSS A */
-body {
-  background: red;
+#### A's package.json:
+```json
+{
+  "name": "a",
+  "styles": [
+    "a.css"
+  ]
 }
 
 ```
-
-### CSS B
-```css
-/* CSS B */
-div {
-  border-color: green;
-}
-
-```
-### CSS C
-```css
-/* CSS C */
-a {
-  color: yellow;
-}
-
+#### A's index.js:
+```js
+require('b')
+require('c')
 ```
 
-
-### Result
-
+### Run cascadify:
 ```
 cascadify ./a/index.js > output.css
 ```
 
+#### output.css
 ```css
-
 /* CSS B */
-div {
-  border-color: green;
-}
-
 /* CSS C */
-a {
-  color: yellow;
-}
-
 /* CSS A */
-body {
-  background: red;
-}
-
 ```
 
 
