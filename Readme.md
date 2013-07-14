@@ -1,6 +1,6 @@
-# stylify
+# cascadify
 
-Stylify recursively finds stylesheets, specified by
+Cascadify recursively finds stylesheets, specified by
 package.json, and ensures they are concatenated in the correct order
 as per the heirarchy in which they are required.
 
@@ -10,7 +10,7 @@ before the styles of module `A`.
 ## Installation
 
 ```
-npm install -g stylify
+npm install -g cascadify
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ Provide the entry point to your app, and pipe output to desired css
 file:
 
 ```
-stylify ./index.js > output.css
+cascadify ./index.js > output.css
 ```
 
 ## Configuration
@@ -37,7 +37,7 @@ Specify styles in an Array in your module's `package.json`:
 
 #### Note: 
 
-Stylify uses [browserify](https://github.com/substack/node-browserify)'s package finding mechanisms to find required modules, so *modules must be required somewhere via a `require` call for their styles to be used*.
+Cascadify uses [browserify](https://github.com/substack/node-browserify)'s package finding mechanisms to find required modules, so *modules must be required somewhere via a `require` call for their styles to be used*.
 
 ## Example
 
@@ -71,7 +71,7 @@ a {
 ### Result
 
 ```
-stylify ./a/index.js > output.css
+cascadify ./a/index.js > output.css
 ```
 
 ```css
