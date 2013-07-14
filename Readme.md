@@ -7,6 +7,8 @@ as per the heirarchy in which they are required.
 For example, if module `A` depends on modules `B` and `C`, the styles of `B` and `C`'s will be output
 before the styles of module `A`.
 
+Cascadify aims to be the CSS analog and partner to a [browserify](https://github.com/substack/node-browserify) JavaScript workflow.
+
 ## Installation
 
 ```
