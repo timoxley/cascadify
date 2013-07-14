@@ -52,9 +52,11 @@ Cascadify uses [browserify](https://github.com/substack/node-browserify)'s packa
   ]
 }
 ```
+
+Assume B and C have a similar package.json to A.
+
 #### A's index.js:
 ```js
-// Assume B and C have a similar package.json to A.
 require('b')
 require('c')
 ```
