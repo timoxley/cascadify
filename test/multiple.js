@@ -7,7 +7,7 @@ var fs = require('fs')
 
 var stylify = require('../')()
 
-test('bundling single css file', function(t) {
+test('bundling multple css files', function(t) {
   t.plan(1)
   stylify.add(__dirname + '/multiple/index.js')
   stylify.bundle().pipe(concat(function(data) {

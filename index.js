@@ -8,6 +8,8 @@ var path = require('path')
 var moduleDeps = require('module-deps')
 var concat = require('concat-stream')
 var map = require('map-stream')
+var log = require('debug')(require('./package.json').name)
+var debug = require('debug')(require('./package.json').name + ' debug')
 
 module.exports = Stylify
 
@@ -18,14 +20,12 @@ function Stylify() {
 }
 
 Stylify.prototype.add = function add(file) {
+  debug('adding %s', file)
   this.browserify.add(file)
 }
 
-Stylify.prototype.require = function require(mod) {
-  this.browserify.require(mod)
-}
-
 Stylify.prototype.bundle = function() {
+  debug('bundling...')
   var tr = through();
   tr.pause()
 
@@ -42,6 +42,7 @@ Stylify.prototype.bundle = function() {
   })
 
   b.bundle(function() {
+    debug('bundle complete.')
     tr.resume()
     tr.end()
   })

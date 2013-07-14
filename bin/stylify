@@ -1,9 +1,24 @@
 #!/usr/bin/env node
 "use strict"
+var fs = require('fs')
+var path = require('path')
 
 var program = require('commander')
-program.parse(process.argv)
 
-var stylify = require('../')()
-program.args.forEach(stylify.add.bind(stylify))
-stylify.bundle().pipe(process.stdout)
+program
+.option('-o, --outfile [file]', 'file to write to')
+.parse(process.argv)
+
+var cascadify = require('../')()
+
+program.args
+.map(function(entry) {
+  return path.resolve(process.cwd(), entry)
+})
+.forEach(cascadify.add.bind(cascadify))
+
+if (program.outfile) {
+  cascadify.bundle().pipe(fs.createWriteStream(program.outfile))
+} else {
+  cascadify.bundle().pipe(process.stdout)
+}

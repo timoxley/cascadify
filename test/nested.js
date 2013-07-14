@@ -7,7 +7,7 @@ var fs = require('fs')
 
 var stylify = require('../')()
 
-test('bundling single css file', function(t) {
+test('bundling nested css files', function(t) {
   t.plan(1)
   stylify.add(__dirname + '/nested/index.js')
   stylify.bundle()
