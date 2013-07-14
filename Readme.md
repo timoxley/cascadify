@@ -1,11 +1,10 @@
 # stylify
 
-Recursively find and concatenates styles specified in package.json.
+Stylify recursively finds stylesheets, specified by
+package.json, and ensures they are concatenated in the correct order
+as per the heirarchy in which they are required.
 
-Stylify will find any required module's stylesheets, specified by
-package.json, and ensure they are bundled in the correct order.
-
-For example, if module `A` depends on modules `B` and `C`, `B` and `C`'s styles will be output
+For example, if module `A` depends on modules `B` and `C`, the styles of `B` and `C`'s will be output
 before the styles of module `A`.
 
 ## Installation
@@ -39,6 +38,62 @@ Specify styles in an Array in your module's `package.json`:
 #### Note: 
 
 Stylify uses [browserify](https://github.com/substack/node-browserify)'s package finding mechanisms to find required modules, so *modules must be required somewhere via a `require` call for their styles to be used*.
+
+## Example
+
+### CSS A
+```css
+/* CSS A */
+body {
+  background: red;
+}
+
+```
+
+### CSS B
+```css
+/* CSS B */
+div {
+  border-color: green;
+}
+
+```
+### CSS C
+```css
+/* CSS C */
+a {
+  color: yellow;
+}
+
+```
+
+
+### Result
+
+```
+stylify ./a/index.js > output.css
+```
+
+```css
+
+/* CSS B */
+div {
+  border-color: green;
+}
+
+/* CSS C */
+a {
+  color: yellow;
+}
+
+/* CSS A */
+body {
+  background: red;
+}
+
+```
+
+
 
 ## Licence
 
