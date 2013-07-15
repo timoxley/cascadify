@@ -5,6 +5,10 @@ var exec = require('child_process').exec
 var concat = require('concat-stream')
 
 var expected = new Error('no')
+var pkg = require('../package.json')
+var path = require('path')
+var BIN = path.resolve(__dirname + '/../', pkg.bin[pkg.name])
+console.log(BIN)
 
 test('setup', function(t) {
   t.plan(1)
@@ -18,7 +22,7 @@ test('setup', function(t) {
 
 test('writes bundled css to stdout', function(t) {
   t.plan(2)
-  exec(__dirname + '/../bin/cascadify ' +__dirname + '/multiple/index.js', function(err, stdout, stderr) {
+  exec(BIN + ' ' + __dirname + '/multiple/index.js', function(err, stdout, stderr) {
     t.ifError(err)
     t.equal(stdout, expected)
   })

@@ -1,13 +1,13 @@
 {
   "name": "cascadify",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Recursively find and concatenates styles specified in package.json.",
   "main": "index.js",
   "scripts": {
     "test": "DEBUG=cascadify* tape test/*.js"
   },
   "bin": {
-    "cascadify": "./bin/cascadify"
+    "cascadify": "bin/cascadify"
   },
   "repository": {
     "type": "git",
