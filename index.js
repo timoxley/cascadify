@@ -84,7 +84,7 @@ function sort() {
   }
 
   function end() {
-    // sort keys so circular results predictable
+    // sort keys so results predictable
     var keys = Object.keys(deps).sort()
     var sortedDeps = {}
     keys.forEach(function(key) {
@@ -104,6 +104,7 @@ function sort() {
         return a.id === b.id && aIndex < bIndex
       }))
     }).forEach(function(dep) {
+      debug('dependency %s', dep.id, Object.keys(dep.deps))
       tr.queue(dep)
     })
     tr.push(null);
@@ -121,9 +122,5 @@ function sort() {
     })
     results.push(dep)
     return results
-  }
-
-  function cmp (a, b) {
-    return a.id < b.id ? -1 : 1;
   }
 };

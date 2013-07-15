@@ -17,10 +17,9 @@ test('setup', function(t) {
 })
 
 test('writes bundled css to stdout', function(t) {
-  t.plan(3)
+  t.plan(2)
   exec(__dirname + '/../bin/cascadify ' +__dirname + '/multiple/index.js', function(err, stdout, stderr) {
     t.ifError(err)
-    t.equal(stderr, '')
     t.equal(stdout, expected)
   })
 })
