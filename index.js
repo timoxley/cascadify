@@ -1,16 +1,22 @@
 "use strict"
 
 var fs = require('fs')
-
-var browserify = require('browserify')
-var through = require('through')
 var path = require('path')
+
+var through = require('through')
 var concat = require('concat-stream')
 var map = require('map-stream')
+
+var browserify = require('browserify')
+
 var log = require('debug')(require('./package.json').name)
 var debug = require('debug')(require('./package.json').name + ' debug')
 
 module.exports = Cascadify
+
+/**
+ * Create new Cascadify instance.
+ */
 
 function Cascadify() {
   if (!(this instanceof Cascadify)) return new Cascadify()
@@ -18,10 +24,22 @@ function Cascadify() {
   this.browserify = browserify()
 }
 
+/**
+ * Add files for bundling.
+ *
+ * @param {String} file full path to file
+ */
+
 Cascadify.prototype.add = function add(file) {
   debug('adding %s', file)
   this.browserify.add(file)
 }
+
+/**
+ * Create a CSS bundle.
+ *
+ * @return {Stream} Stream of bundled CSS
+ */
 
 Cascadify.prototype.bundle = function() {
   debug('bundling...')
@@ -54,6 +72,13 @@ Cascadify.prototype.bundle = function() {
 
 }
 
+/**
+ * Get a stream of absolute stylesheet filenames from packages
+ *
+ * @return {Stream}
+ * @api private
+ */
+
 function extractStylesheets(pkgs) {
   return through(function(dep) {
     var tr = this
@@ -66,6 +91,13 @@ function extractStylesheets(pkgs) {
   })
 }
 
+/**
+ * Pipe a stream of filenames in, get stream of all contents out.
+ *
+ * @return {Stream}
+ * @api private
+ */
+
 function readFiles() {
   return map(function(file, next) {
     fs.createReadStream(file, {encoding: 'utf8'}).pipe(concat(function(data) {
@@ -74,8 +106,15 @@ function readFiles() {
   })
 }
 
-function sort() {
+/**
+ * Pipe dependencies in, get stream of dependencies sorted in
+ * appropriate order based on package dependents.
+ *
+ * @return {Stream}
+ * @api private
+ */
 
+function sort() {
   var deps = {};
   return through(write, end);
 
@@ -123,4 +162,4 @@ function sort() {
     results.push(dep)
     return results
   }
-};
+}
