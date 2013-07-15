@@ -8,7 +8,6 @@ var expected = new Error('no')
 var pkg = require('../package.json')
 var path = require('path')
 var BIN = path.resolve(__dirname + '/../', pkg.bin[pkg.name])
-console.log(BIN)
 
 test('setup', function(t) {
   t.plan(1)
