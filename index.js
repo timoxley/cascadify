@@ -103,9 +103,24 @@ function readFiles() {
     debug('reading file... %s', file)
     fs.createReadStream(file, {encoding: 'utf8'}).pipe(concat(function(data) {
       debug('read file. %s', file)
-      next(null, data)
+      next(null, Cascadify.addHeader(file, data))
     }))
   })
+}
+
+/**
+ * Default header between concatenated files.
+ * e.g. "Cascadify:  relative/path/to/file.css"
+ *
+ * @param {String} file path to file
+ * @param {String} data content of file
+ * @return {String}
+ * @api public
+ */
+
+Cascadify.addHeader = function(file, data) {
+  file = path.relative(process.cwd(), file)
+  return '\n\n/* Cascadify: '+file+' */\n\n' + data
 }
 
 /**
