@@ -100,7 +100,9 @@ function extractStylesheets(pkgs) {
 
 function readFiles() {
   return map(function(file, next) {
+    debug('reading file... %s', file)
     fs.createReadStream(file, {encoding: 'utf8'}).pipe(concat(function(data) {
+      debug('read file. %s', file)
       next(null, data)
     }))
   })
