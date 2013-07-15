@@ -28,5 +28,3 @@ test('bundling nested css files', function(t) {
             h(nestedCSSFile, nestedCSSData))
   }))
 })
-
-

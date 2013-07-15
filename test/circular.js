@@ -19,5 +19,3 @@ test('bundling circular dependencies css files', function(t) {
     t.equal(data, Cascadify.addHeader(bFile, bCSS) + Cascadify.addHeader(aFile, aCSS))
   }))
 })
-
-
