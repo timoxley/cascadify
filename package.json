@@ -6,6 +6,9 @@
   "scripts": {
     "test": "DEBUG=cascadify* tape test/*.js"
   },
+  "bin": {
+    "cascadify": "./bin/cascadify"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/timoxley/cascadify.git"
