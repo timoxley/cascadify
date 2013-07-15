@@ -83,10 +83,16 @@ function sort() {
     deps[dep.id] = dep
   }
 
-  function end () {
+  function end() {
+    // sort keys so circular results predictable
+    var keys = Object.keys(deps).sort()
+    var sortedDeps = {}
+    keys.forEach(function(key) {
+      sortedDeps[key] = deps[key]
+    })
+    deps = sortedDeps
+
     var tr = this;
-
-
 
     var root = Object.keys(deps).filter(function(id) {
       return deps[id].entry
