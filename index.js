@@ -11,20 +11,20 @@ var map = require('map-stream')
 var log = require('debug')(require('./package.json').name)
 var debug = require('debug')(require('./package.json').name + ' debug')
 
-module.exports = Stylify
+module.exports = Cascadify
 
-function Stylify() {
-  if (!(this instanceof Stylify)) return new Stylify()
+function Cascadify() {
+  if (!(this instanceof Cascadify)) return new Cascadify()
   this.files = []
   this.browserify = browserify()
 }
 
-Stylify.prototype.add = function add(file) {
+Cascadify.prototype.add = function add(file) {
   debug('adding %s', file)
   this.browserify.add(file)
 }
 
-Stylify.prototype.bundle = function() {
+Cascadify.prototype.bundle = function() {
   debug('bundling...')
   var tr = through();
   tr.pause()
