@@ -1,6 +1,9 @@
 # cascadify
 
-Cascadify aims to be the CSS analog and partner to a [browserify](https://github.com/substack/node-browserify) JavaScript workflow.
+[![Build Status](https://travis-ci.org/timoxley/cascadify.png?branch=master)](https://travis-ci.org/timoxley/cascadify)
+
+Cascadify aims to work alongside [browserify](https://github.com/substack/node-browserify) to produce a single CSS file
+for all your client-side npm dependencies.
 
 Cascadify recursively finds stylesheets, specified by
 package.json, and ensures they are concatenated in the correct order
