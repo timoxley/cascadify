@@ -15,7 +15,22 @@ program.args
 .map(function(entry) {
   return path.resolve(process.cwd(), entry)
 })
-.forEach(cascadify.add.bind(cascadify))
+.map(function(entry) {
+  if (fs.statSync(entry).isDirectory()) {
+    try {
+      var pkg = JSON.parse(fs.readFileSync(path.join(entry, 'package.json'), 'utf8'))
+      if (!pkg.browser) return cascadify.add(path.resolve(entry, pkg.main))
+
+      Object.keys(pkg.browser).forEach(function(key) {
+        if (pkg.browser[key]) cascadify.add(path.resolve(entry, key))
+      })
+    } catch (e) {
+      console.warn(e)
+      cascadify.add(entry)
+    }
+  }
+  return cascadify.add(entry)
+})
 
 if (program.outfile) {
   cascadify.bundle().pipe(fs.createWriteStream(program.outfile))

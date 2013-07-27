@@ -85,8 +85,11 @@ function extractStylesheets(pkgs) {
     var pkg = pkgs[dep.id]
     if (!(pkg && pkg.styles)) return
     var file = dep.id
+    debug('extracting styles from %s', file)
     pkg.styles.map(function(style) {
-      tr.push(path.join(path.dirname(file), style))
+      var styleFile = path.join(path.dirname(file), style)
+      debug('style %s', styleFile)
+      tr.push(styleFile)
     })
   })
 }
