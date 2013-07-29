@@ -1,0 +1,1 @@
+require('../cwd/index.js')
