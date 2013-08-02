@@ -1,0 +1,7 @@
+{
+  "name": "a",
+  "main": "index.js",
+  "styles": [
+    "style.css"
+  ]
+}

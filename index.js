@@ -6,6 +6,7 @@ var path = require('path')
 var through = require('through')
 var concat = require('concat-stream')
 var map = require('map-stream')
+var parents = require('parents');
 
 var browserify = require('browserify')
 
@@ -51,7 +52,20 @@ Cascadify.prototype.bundle = function() {
   var b = this.browserify
 
   b.on('package', function(file, pkg) {
-    pkgs[file] = pkg
+    var dirs = parents(path.dirname(file));
+    (function next () {
+      var dir = dirs.shift();
+      if (dir === undefined) return;
+      var pkgfile = path.join(dir, 'package.json');
+      if (pkgs[file]) return;
+      fs.readFile(pkgfile, function (err, src) {
+        if (err) return next();
+        try { var pkg = JSON.parse(src) }
+        catch (e) {}
+        pkg._pkgfile = pkgfile;
+        pkgs[file] = pkg;
+      });
+    })();
   })
 
   b.on('dep', function(dep) {
@@ -84,10 +98,9 @@ function extractStylesheets(pkgs) {
     var tr = this
     var pkg = pkgs[dep.id]
     if (!(pkg && pkg.styles)) return
-    var file = dep.id
-    debug('extracting styles from %s', file)
+    debug('extracting styles from %s', pkg._pkgfile)
     pkg.styles.map(function(style) {
-      var styleFile = path.join(path.dirname(file), style)
+      var styleFile = path.join(path.dirname(pkg._pkgfile), style)
       debug('style %s', styleFile)
       tr.push(styleFile)
     })
