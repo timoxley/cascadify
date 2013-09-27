@@ -1,6 +1,6 @@
 {
   "name": "cascadify",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Recursively find and concatenates styles specified in package.json.",
   "main": "index.js",
   "scripts": {
