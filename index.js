@@ -51,7 +51,10 @@ Cascadify.prototype.bundle = function() {
   var b = this.browserify
 
   b.on('package', function(file, pkg) {
-    pkgs[file] = pkg
+    findPackage(file, function(err, pkgfile, pkg) {
+      pkgs[file] = pkg
+      pkgs[file].__path = pkgfile
+    })
   })
 
   b.on('dep', function(dep) {
@@ -70,6 +73,45 @@ Cascadify.prototype.bundle = function() {
   .pipe(readFiles())
   .pipe(through())
 
+
+  /**
+  * Super hacky fix to get package path
+  * Pulled this codes out of browserify.
+  * TODO: KILL
+  **/
+
+  function findPackage(basedir, cb) {
+    var parents = require('parents')
+    var dirs = parents(basedir);
+    (function next () {
+        var dir = dirs.shift();
+        if (dir === 'node_modules' || dir === undefined) {
+            return cb(null, null, null);
+        }
+        var pkgfile = path.join(dir, 'package.json');
+        if (b._pkgcache[pkgfile]) {
+            cb(null, pkgfile, b._pkgcache[pkgfile]);
+        }
+        else readPackage(pkgfile, function (err, pkg) {
+            b._pkgcache[pkgfile] = pkg;
+            if (err) return next()
+            else cb(null, pkgfile, pkg)
+        });
+    })();
+  }
+
+  function readPackage (pkgfile, cb) {
+    try {
+      var src = fs.readFileSync(pkgfile) // OH GOD I'M SORRY
+      var pkg = JSON.parse(src)
+    }
+    catch (e) {
+      return cb(e)
+    }
+    cb(null, pkg);
+  }
+
+
 }
 
 /**
@@ -87,7 +129,7 @@ function extractStylesheets(pkgs) {
     var file = dep.id
     debug('extracting styles from %s', file)
     pkg.styles.map(function(style) {
-      var styleFile = path.join(path.dirname(file), style)
+      var styleFile = path.join(path.dirname(pkg.__path), style)
       debug('style %s', styleFile)
       tr.push(styleFile)
     })
